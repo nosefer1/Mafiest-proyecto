@@ -4,7 +4,7 @@ const config = {
   PORT: process.env.PORT || 3001,
   DATABASE_CONFIG: {
     username: 'postgres',
-    password: 'jhoan',
+    password: 'mafiest',
     dialect: 'postgres',
     host: 'localhost',
     dialect: 'postgres',
