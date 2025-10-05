@@ -10,25 +10,32 @@ const setupDatabase = async () => {
     // Crear usuarios iniciales
     await User.bulkCreate([
       {
-        username: 'administrador',
+        username: 'admin',
         name: 'Administrador Principal',
         email: 'admin@example.com',
         passwordHash: await bcrypt.hash('admin123', 10),
-        Rol: 'administrador'
+        rol: 'administrador'
       },
       {
-        username: 'profesor1',
-        name: 'Profesor Demo',
-        email: 'profesor@example.com',
-        passwordHash: await bcrypt.hash('profesor123', 10),
-        Rol: 'profesor'
+        username: 'docente1',
+        name: 'Docente Demo',
+        email: 'docente@example.com',
+        passwordHash: await bcrypt.hash('docente123', 10),
+        rol: 'docente'
       },
       {
-        username: 'usuario1',
-        name: 'Usuario Demo',
-        email: 'usuario@example.com',
-        passwordHash: await bcrypt.hash('usuario123', 10),
-        Rol: 'usuario'
+        username: 'estudiante1',
+        name: 'Estudiante Demo',
+        email: 'estudiante@example.com',
+        passwordHash: await bcrypt.hash('estudiante123', 10),
+        rol: 'estudiante'
+      },
+      {
+        username: 'independiente1',
+        name: 'Independiente Demo',
+        email: 'independiente@example.com',
+        passwordHash: await bcrypt.hash('independiente123', 10),
+        rol: 'independiente'
       }
     ]);
 

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import Menu from '../components/Menu'
-import contactService from '../services/contacts'
+import contactosService from '../services/contactosService'
 import './ver-contacts.css'
 
-const VerContacts = ({ user }) => {
-  const [contacts, setContacts] = useState([])
+const VerContactos = ({ user }) => {
+  const [contactos, setContactos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -22,8 +22,8 @@ const VerContacts = ({ user }) => {
     const fetchContacts = async () => {
       try {
         setLoading(true)
-        const contactsList = await contactService.getAll()
-        setContacts(contactsList)
+  const contactosList = await contactosService.getAll()
+  setContactos(contactosList)
         setError(null)
       } catch (err) {
         console.error('Error al obtener contactos:', err)
@@ -55,9 +55,9 @@ const VerContacts = ({ user }) => {
   }
 
   return (
-    <div className="contacts-container">
+  <div className="contactos-container">
       <Menu user={user} />
-      <h2>Lista de Contactos</h2>
+  <h2>Lista de Contactos</h2>
       
       {contacts.length === 0 ? (
         <p className="no-contacts">No hay contactos registrados</p>
@@ -82,4 +82,4 @@ const VerContacts = ({ user }) => {
   )
 }
 
-export default VerContacts
+export default VerContactos

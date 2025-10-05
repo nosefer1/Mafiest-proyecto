@@ -1,3 +1,4 @@
+import '../styles/login.css';
 import { useState } from 'react'
 import loginService from '../services/login'
 import { setToken as setActividadesToken } from '../services/actividadesService'

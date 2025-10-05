@@ -1,3 +1,32 @@
+// Edit user info (self-update)
+usersRouter.patch('/:id', async (request, response) => {
+  try {
+    const id = request.params.id;
+    const { name, email, password, username } = request.body;
+    const user = await User.findByPk(id);
+    if (!user) {
+      return response.status(404).json({ error: 'User not found' });
+    }
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (username) user.username = username;
+    if (password) {
+      const saltRounds = 10;
+      user.passwordHash = await bcrypt.hash(password, saltRounds);
+    }
+    await user.save();
+    response.json({
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      rol: user.rol,
+      grupoId: user.grupoId
+    });
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+});
 const usersRouter = require('express').Router();
 const { User } = require('../models');
 const bcrypt = require('bcrypt');

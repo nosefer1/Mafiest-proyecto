@@ -1,4 +1,4 @@
-const ContactList = ({ contactos, onEditar, onBorrar }) => (
+const ContactosLista = ({ contactos, onEditar, onBorrar }) => (
   <ul>
     {contactos.map((c) => (
       <li key={c.id}>
@@ -26,4 +26,4 @@ const ContactList = ({ contactos, onEditar, onBorrar }) => (
   </ul>
 )
 
-export default ContactList
+export default ContactosLista

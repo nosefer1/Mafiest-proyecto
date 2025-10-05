@@ -9,6 +9,7 @@ const usersRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
 const contactsRouter = require('./controllers/contacts');
 const actividadesRouter = require('./controllers/actividadesRouters');
+const respuestasActividadRouter = require('./controllers/respuestasActividadRouters');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/contacts', contactsRouter);
 app.use('/api/actividades', actividadesRouter);
+app.use('/api/respuestas-actividad', respuestasActividadRouter);
 app.use('/api/asesorias', asesoriasRouter);
 
 // Error handling

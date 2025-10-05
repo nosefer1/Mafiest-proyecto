@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './Menu.css';
+import '../styles/Menu.css';
 
 const Menu = ({ user }) => {
   const location = useLocation()

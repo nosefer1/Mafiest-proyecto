@@ -31,6 +31,11 @@ const Grabacion = sequelize.define('Grabacion', {
   grupoId: {
     type: DataTypes.INTEGER,
     allowNull: true
+  },
+  tipo: {
+    type: DataTypes.ENUM('general', 'grupal'),
+    allowNull: false,
+    defaultValue: 'general'
   }
 }, {
   tableName: 'grabaciones',

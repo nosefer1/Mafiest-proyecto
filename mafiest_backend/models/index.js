@@ -1,8 +1,15 @@
 const { sequelize } = require('../db');
 const Grabacion = require('./grabacion');
 const User = require('./user');
-const Contact = require('./contact');
+const Contacto = require('./contacto');
 const Actividad = require('./actividad');
+const Asesoria = require('./asesoria');
+const RespuestaActividad = require('./respuestaActividad');
+// Asociaciones RespuestaActividad
+RespuestaActividad.belongsTo(User, { foreignKey: 'userId', as: 'usuario' });
+RespuestaActividad.belongsTo(Actividad, { foreignKey: 'actividadId', as: 'actividad' });
+User.hasMany(RespuestaActividad, { foreignKey: 'userId', as: 'respuestasActividades' });
+Actividad.hasMany(RespuestaActividad, { foreignKey: 'actividadId', as: 'respuestas' });
 
 // Asociaciones Grabacion
 Grabacion.belongsTo(User, {
@@ -21,6 +28,16 @@ Actividad.belongsTo(User, {
 User.hasMany(Actividad, {
   foreignKey: 'creadorId',
   as: 'actividades'
+});
+
+// Asociaciones Asesoria
+Asesoria.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'asesor'
+});
+User.hasMany(Asesoria, {
+  foreignKey: 'userId',
+  as: 'asesorias'
 });
 
 // Test database connection
@@ -49,8 +66,10 @@ module.exports = {
   sequelize,
   Grabacion,
   User,
-  Contact,
+  Contacto,
   Actividad,
+  Asesoria,
+  RespuestaActividad,
   testConnection,
   syncModels
 };

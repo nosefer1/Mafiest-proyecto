@@ -19,6 +19,15 @@ const Actividad = sequelize.define('Actividad', {
     type: DataTypes.DATE,
     allowNull: false
   },
+  tipo: {
+    type: DataTypes.ENUM('formulario', 'archivo'),
+    allowNull: false,
+    defaultValue: 'formulario'
+  },
+  archivoUrl: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   preguntas: {
     type: DataTypes.TEXT,
     get() {
@@ -36,6 +45,11 @@ const Actividad = sequelize.define('Actividad', {
       model: 'Users',
       key: 'id'
     }
+  },
+  global: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 }, {
   tableName: 'actividades',

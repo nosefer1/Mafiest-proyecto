@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import AppRoutes from "./ROUTS/AppRouts"
+import AppRoutes from "./routes/AppRoutes"
 
 const App = () => {
   const [user, setUser] = useState(null)

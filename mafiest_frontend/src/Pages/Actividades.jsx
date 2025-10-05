@@ -3,13 +3,16 @@ import { crearActividad, setToken, obtenerMisActividades } from '../services/act
 import Menu from "../components/Menu"
 
 
-const Tareas = ({ user }) => {
+const Actividades = ({ user }) => {
   const [titulo, setTitulo] = useState("")
   const [descripcion, setDescripcion] = useState("")
   const [fechaLimite, setFechaLimite] = useState("")
   const [mensaje, setMensaje] = useState(null)
-  const [tareas, setTareas] = useState([])
-  const [errorTareas, setErrorTareas] = useState(null)
+  const [actividades, setActividades] = useState([])
+  const [errorActividades, setErrorActividades] = useState(null)
+  const [tipo, setTipo] = useState('formulario')
+  const [archivo, setArchivo] = useState(null)
+  const [archivoUrl, setArchivoUrl] = useState("")
   const [preguntas, setPreguntas] = useState([{
     pregunta: '',
     opciones: [{ texto: '', esCorrecta: false }]
@@ -24,26 +27,26 @@ const Tareas = ({ user }) => {
 
   // Modificar la validación de roles
   useEffect(() => {
-    const cargarTareas = async () => {
-      if (user?.token && user?.Rol === 'profesor') {
+    const cargarActividades = async () => {
+      if (user?.token && (user?.Rol === 'docente' || user?.Rol === 'administrador')) {
         try {
-          const misTareas = await obtenerMisTareas()
-          if (Array.isArray(misTareas)) {
-            setTareas(misTareas)
-            setErrorTareas(null)
+          const misActividades = await obtenerMisActividades()
+          if (Array.isArray(misActividades)) {
+            setActividades(misActividades)
+            setErrorActividades(null)
           } else {
-            console.error('La respuesta no es un array:', misTareas)
-            setTareas([])
-            setErrorTareas('No se pudieron cargar las tareas correctamente')
+            console.error('La respuesta no es un array:', misActividades)
+            setActividades([])
+            setErrorActividades('No se pudieron cargar las actividades correctamente')
           }
         } catch (error) {
-          console.error('Error al cargar tareas:', error)
-          setTareas([])
-          setMensaje("Error al cargar las tareas")
+          console.error('Error al cargar actividades:', error)
+          setActividades([])
+          setMensaje("Error al cargar las actividades")
         }
       }
     }
-    cargarTareas()
+    cargarActividades()
   }, [user?.token])
 
   const agregarPregunta = () => {
@@ -171,76 +174,41 @@ const Tareas = ({ user }) => {
     return true
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
     try {
-      // Validaciones del lado del cliente
-      if (!titulo.trim()) {
-        setMensaje("❌ El título es obligatorio")
-        return
-      }
-
-      if (!fechaLimite) {
-        setMensaje("❌ La fecha límite es obligatoria")
-        return
-      }
-
-      // Validar preguntas
-      for (const pregunta of preguntas) {
-        if (!pregunta.pregunta.trim()) {
-          setMensaje("❌ Cada pregunta debe tener un texto")
-          return
-        }
-
-        if (!pregunta.opciones || pregunta.opciones.length < 2) {
-          setMensaje("❌ Cada pregunta debe tener al menos dos opciones")
-          return
-        }
-
-        const opcionesValidas = pregunta.opciones.filter(o => o.texto.trim())
-        if (opcionesValidas.length < 2) {
-          setMensaje("❌ Cada pregunta debe tener al menos dos opciones con texto")
-          return
-        }
-
-        const tieneOpcionCorrecta = pregunta.opciones.some(o => o.esCorrecta)
-        if (!tieneOpcionCorrecta) {
-          setMensaje("❌ Cada pregunta debe tener al menos una opción correcta")
-          return
-        }
-      }
-
-      const nuevaTarea = {
+      let nuevaActividad = {
         titulo,
         descripcion,
         fechaLimite,
-        preguntas
+        tipo
       }
-      
-      await crearTarea(nuevaTarea)
-      setMensaje("✅ Tarea creada exitosamente")
-      
-      // Limpiar formulario
+      if (tipo === 'archivo') {
+        if (archivo) {
+          nuevaActividad.archivo = archivo
+        } else if (archivoUrl) {
+          nuevaActividad.archivoUrl = archivoUrl
+        } else {
+          setMensaje('Debes subir un archivo o ingresar una URL')
+          return
+        }
+      } else if (tipo === 'formulario') {
+        nuevaActividad.preguntas = preguntas
+      }
+      await crearActividad(nuevaActividad)
+      setMensaje('Actividad creada correctamente')
       setTitulo("")
       setDescripcion("")
       setFechaLimite("")
-      setPreguntas([{
-        pregunta: '',
-        opciones: [{ texto: '', esCorrecta: false }]
-      }])
-
-      // Recargar después de un momento
-      setTimeout(() => {
-        window.location.reload()
-      }, 1000)
-      
+      setArchivo(null)
+      setArchivoUrl("")
+      setPreguntas([{ pregunta: '', opciones: [{ texto: '', esCorrecta: false }] }])
+      setTipo('formulario')
     } catch (error) {
-      console.error('Error al crear tarea:', error)
-      setMensaje(`❌ ${error.response?.data?.error || error.message}`)
+      setMensaje(error.response?.data?.error || 'Error al crear actividad')
     }
-
-    setTimeout(() => setMensaje(null), 4000)
+    setTimeout(() => setMensaje(null), 3000)
   }
 
   // Modificar la función actualizarOpcion
@@ -261,146 +229,128 @@ const Tareas = ({ user }) => {
   }
 
   return (
-    <div>
+    <div style={{ minHeight: '100vh', background: '#f6f8fa' }}>
       <Menu user={user} />
-      <h2>Gestión de Tareas</h2>
-      {mensaje && (
-        <p className={`mensaje ${mensaje.includes("❌") ? "messageerror" : "messagesuccess"}`}>
-          {mensaje}
-        </p>
-      )}
-      
-      {user?.Rol === 'profesor' ? (
-        <>
-          <h3>Crear Nueva Tarea</h3>
-          <form onSubmit={handleSubmit} className="tarea-form">
-            <div>
-              <label>Título: </label>
-              <input
-                type="text"
-                value={titulo}
-                onChange={e => setTitulo(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label>Descripción: </label>
-              <textarea
-                value={descripcion}
-                onChange={e => setDescripcion(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Fecha Límite: </label>
-              <input
-                type="date"
-                value={fechaLimite}
-                onChange={e => setFechaLimite(e.target.value)}
-                required
-                min={new Date().toISOString().split('T')[0]}
-              />
-            </div>
-            
-            <div className="preguntas-container">
-              <h4>Preguntas:</h4>
+      <div style={{ maxWidth: 600, margin: '0 auto', background: '#fff', borderRadius: 16, boxShadow: '0 2px 16px rgba(0,0,0,0.08)', padding: '2.5rem 2rem', marginTop: 32 }}>
+  <h2 style={{ textAlign: 'center', color: '#e94560', fontWeight: 800, marginBottom: 24 }}>Crear Actividad</h2>
+  {mensaje && <div style={{ color: mensaje.includes('Error') ? 'red' : 'green', marginBottom: 16 }}>{mensaje}</div>}
+        <form onSubmit={handleSubmit} encType={tipo === 'archivo' ? 'multipart/form-data' : undefined}>
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontWeight: 600 }}>Tipo de actividad:</label>
+            <select value={tipo} onChange={e => setTipo(e.target.value)} style={{ marginLeft: 8 }}>
+              <option value="formulario">Formulario</option>
+              <option value="archivo">Archivo</option>
+            </select>
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontWeight: 600 }}>Título:</label>
+            <input type="text" value={titulo} onChange={e => setTitulo(e.target.value)} required style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd' }} />
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontWeight: 600 }}>Descripción:</label>
+            <input type="text" value={descripcion} onChange={e => setDescripcion(e.target.value)} required style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd' }} />
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontWeight: 600 }}>Fecha límite:</label>
+            <input type="date" value={fechaLimite} onChange={e => setFechaLimite(e.target.value)} required style={{ padding: 8, borderRadius: 6, border: '1px solid #ddd' }} />
+          </div>
+          {tipo === 'archivo' && (
+            <>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ fontWeight: 600 }}>Subir archivo:</label>
+                <input type="file" onChange={e => setArchivo(e.target.files[0])} style={{ marginLeft: 8 }} />
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ fontWeight: 600 }}>o URL de archivo:</label>
+                <input type="text" value={archivoUrl} onChange={e => setArchivoUrl(e.target.value)} style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd' }} />
+              </div>
+            </>
+          )}
+          {tipo === 'formulario' && (
+            <div style={{ marginBottom: 16 }}>
+              <h4 style={{ color: '#1a2238', fontWeight: 700 }}>Preguntas</h4>
               {preguntas.map((pregunta, preguntaIndex) => (
-                <div key={preguntaIndex} className="pregunta-item">
+                <div key={preguntaIndex} style={{ marginBottom: 16, background: '#f6f8fa', borderRadius: 8, padding: 12 }}>
                   <input
                     type="text"
+                    placeholder="Pregunta"
                     value={pregunta.pregunta}
-                    onChange={(e) => actualizarPregunta(preguntaIndex, 'pregunta', e.target.value)}
-                    placeholder="Escribe la pregunta..."
-                    required
-                    className={!pregunta.pregunta.trim() ? 'invalid' : ''}
+                    onChange={e => actualizarPregunta(preguntaIndex, 'pregunta', e.target.value)}
+                    style={{ width: '100%', marginBottom: 8, padding: 6, borderRadius: 4, border: '1px solid #ccc' }}
                   />
-                  
-                  <div className="opciones-lista">
+                  <button type="button" onClick={() => eliminarPregunta(preguntaIndex)} style={{ color: '#e94560', background: 'none', border: 'none', cursor: 'pointer', float: 'right' }}>Eliminar</button>
+                  <div style={{ marginTop: 8 }}>
+                    Opciones:
                     {pregunta.opciones.map((opcion, opcionIndex) => (
-                      <div key={opcionIndex} className="opcion-item">
+                      <div key={opcionIndex} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
                         <input
                           type="text"
+                          placeholder="Opción"
                           value={opcion.texto}
-                          onChange={(e) => actualizarOpcion(preguntaIndex, opcionIndex, 'texto', e.target.value)}
-                          placeholder="Escribe la opción..."
-                          required
-                          className={!opcion.texto.trim() ? 'invalid' : ''}
+                          onChange={e => {
+                            const nuevasPreguntas = preguntas.map((p, i) => {
+                              if (i === preguntaIndex) {
+                                const nuevasOpciones = p.opciones.map((o, j) => j === opcionIndex ? { ...o, texto: e.target.value } : o)
+                                return { ...p, opciones: nuevasOpciones }
+                              }
+                              return p
+                            })
+                            setPreguntas(nuevasPreguntas)
+                          }}
+                          style={{ flex: 1, marginRight: 8, padding: 4, borderRadius: 4, border: '1px solid #ccc' }}
                         />
-                        <label>
+                        <label style={{ marginRight: 8 }}>
                           <input
                             type="checkbox"
                             checked={opcion.esCorrecta}
-                            onChange={(e) => actualizarOpcion(preguntaIndex, opcionIndex, 'esCorrecta', e.target.checked)}
+                            onChange={e => {
+                              const nuevasPreguntas = preguntas.map((p, i) => {
+                                if (i === preguntaIndex) {
+                                  const nuevasOpciones = p.opciones.map((o, j) => ({ ...o, esCorrecta: j === opcionIndex ? e.target.checked : false }))
+                                  return { ...p, opciones: nuevasOpciones }
+                                }
+                                return p
+                              })
+                              setPreguntas(nuevasPreguntas)
+                            }}
                           /> Correcta
                         </label>
-                        {pregunta.opciones.length > 1 && (
-                          <button 
-                            type="button" 
-                            onClick={() => eliminarOpcion(preguntaIndex, opcionIndex)}
-                            className="btn-eliminar"
-                          >
-                            Eliminar opción
-                          </button>
-                        )}
+                        <button type="button" onClick={() => eliminarOpcion(preguntaIndex, opcionIndex)} style={{ color: '#e94560', background: 'none', border: 'none', cursor: 'pointer' }}>Eliminar opción</button>
                       </div>
                     ))}
-                    <button 
-                      type="button" 
-                      onClick={() => agregarOpcion(preguntaIndex)}
-                      className="btn-agregar"
-                    >
-                      + Agregar opción
-                    </button>
+                    <button type="button" onClick={() => agregarOpcion(preguntaIndex)} style={{ marginTop: 4, color: '#1a2238', background: '#eaeaea', border: 'none', borderRadius: 4, padding: '4px 12px', cursor: 'pointer' }}>Agregar opción</button>
                   </div>
-
-                  {preguntas.length > 1 && (
-                    <button 
-                      type="button" 
-                      onClick={() => eliminarPregunta(preguntaIndex)}
-                      className="btn-eliminar-pregunta"
-                    >
-                      Eliminar pregunta
-                    </button>
-                  )}
                 </div>
               ))}
-              <button 
-                type="button" 
-                onClick={agregarPregunta}
-                className="btn-agregar-pregunta"
-              >
-                + Agregar pregunta
-              </button>
+              <button type="button" onClick={agregarPregunta} style={{ color: '#fff', background: '#e94560', border: 'none', borderRadius: 6, padding: '8px 16px', fontWeight: 600, marginTop: 8 }}>Agregar pregunta</button>
             </div>
-            
-            <button type="submit" className="btn-submit">Crear Tarea</button>
-          </form>
-
-          <h3>Mis Tareas</h3>
-          {errorTareas ? (
-            <p className="error-message">{errorTareas}</p>
-          ) : tareas.length === 0 ? (
-            <p>No hay tareas disponibles</p>
-          ) : (
-            <ul>
-              {tareas.map(tarea => (
-                <li key={tarea.id}>
-                  <h4>{tarea.titulo}</h4>
-                  <p>{tarea.descripcion}</p>
-                  <p>Fecha límite: {new Date(tarea.fechaLimite).toLocaleDateString()}</p>
-                  <p>Estado: {tarea.completada ? 'Completada' : 'Pendiente'}</p>
-                  <p>Creado por: {tarea.nombreCreador}</p>
-                  <p>Rol: {tarea.userInfo?.Rol}</p>
-                  {tarea.respuesta && <p>Respuesta: {tarea.respuesta}</p>}
-                </li>
-              ))}
-            </ul>
           )}
-        </>
-      ) : (
-        <p>No tienes permisos para crear tareas. Solo los profesores pueden crear tareas.</p>
-      )}
+          <button type="submit" style={{ width: '100%', background: '#e94560', color: '#fff', padding: '12px', border: 'none', borderRadius: 6, fontWeight: 700, fontSize: '1rem', marginTop: 16 }}>Crear actividad</button>
+        </form>
+      </div>
+      <div style={{ maxWidth: 600, margin: '2rem auto', background: '#fff', borderRadius: 16, boxShadow: '0 2px 16px rgba(0,0,0,0.08)', padding: '2rem' }}>
+        <h3 style={{ color: '#1a2238', fontWeight: 700 }}>Mis Actividades</h3>
+        {errorActividades ? (
+          <p style={{ color: 'red' }}>{errorActividades}</p>
+        ) : actividades.length === 0 ? (
+          <p>No hay actividades disponibles</p>
+        ) : (
+          <ul>
+            {actividades.map(actividad => (
+              <li key={actividad.id} style={{ marginBottom: 16, borderBottom: '1px solid #eee', paddingBottom: 8 }}>
+                <h4 style={{ margin: 0 }}>{actividad.titulo}</h4>
+                <p style={{ margin: 0 }}>{actividad.descripcion}</p>
+                <p style={{ margin: 0 }}>Fecha límite: {actividad.fechaLimite ? new Date(actividad.fechaLimite).toLocaleDateString() : 'Sin fecha'}</p>
+                <p style={{ margin: 0 }}>Tipo: {actividad.tipo}</p>
+                <p style={{ margin: 0 }}>Creado por: {actividad.nombreCreador || 'N/A'}</p>
+                {actividad.archivoUrl && <a href={actividad.archivoUrl} target="_blank" rel="noopener noreferrer">Ver archivo</a>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   )
 }
 
-export default Tareas
+export default Actividades

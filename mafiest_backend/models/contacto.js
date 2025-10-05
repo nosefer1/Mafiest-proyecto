@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db');
 
-const Contact = sequelize.define('Contact', {
+const Contacto = sequelize.define('Contacto', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -29,8 +29,8 @@ const Contact = sequelize.define('Contact', {
     type: DataTypes.TEXT
   }
 }, {
-  tableName: 'contacts',
+  tableName: 'contactos',
   timestamps: true
 });
 
-module.exports = Contact;
+module.exports = Contacto;
