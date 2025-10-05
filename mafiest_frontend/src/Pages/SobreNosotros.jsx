@@ -1,5 +1,5 @@
 import Menu from "../components/Menu";
-import "./SobreNosotros.css";
+import '../styles/sobrenosotros.css';
 const SobreNosotros = () => (
   <div style={{ minHeight: '100vh', background: '#f6f8fa' }}>
     <Menu />

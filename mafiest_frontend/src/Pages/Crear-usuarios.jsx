@@ -9,7 +9,7 @@ const Crear = ({ user }) => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [Rol, setRol] = useState("usuario")
+  const [Rol, setRol] = useState("estudiante")
   const [message, setMessage] = useState(null)
 
   const handleSubmit = async (e) => {
@@ -32,7 +32,7 @@ const Crear = ({ user }) => {
       setName("")
       setEmail("")
       setPassword("")
-      setRol("usuario")
+  setRol("estudiante")
       
       setTimeout(() => {
         window.location.reload()
@@ -97,8 +97,8 @@ const Crear = ({ user }) => {
             onChange={e => setRol(e.target.value)}
             required
           >
-            <option value="usuario">Usuario</option>
-            <option value="profesor">Profesor</option>
+            <option value="estudiante">Estudiante</option>
+            <option value="docente">Docente</option>
             <option value="administrador">Administrador</option>
           </select>
         </div>

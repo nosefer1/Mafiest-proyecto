@@ -7,7 +7,7 @@ import Actividades from "../Pages/Actividades";
 import VerActividades from "../Pages/Ver-Actividades";
 import VerContactos from "../Pages/Ver-Contactos";
 import Asesorias from "../Pages/Asesorias";
-import Login from "../components/Login";
+import Login from "../Pages/Login";
 import RegistroIndependiente from "../Pages/RegistroIndependiente";
 import Grabaciones from "../Pages/Grabaciones";
 import VerGrabaciones from "../Pages/Ver-Grabaciones";

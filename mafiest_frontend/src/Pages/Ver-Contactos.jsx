@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Menu from '../components/Menu'
 import contactosService from '../services/contactosService'
-import './ver-contacts.css'
+import '../styles/ver-contacts.css';
 
 const VerContactos = ({ user }) => {
   const [contactos, setContactos] = useState([])

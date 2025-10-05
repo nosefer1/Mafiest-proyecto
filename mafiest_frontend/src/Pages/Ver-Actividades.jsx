@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { obtenerActividadesVisibles, setToken, responderActividad } from "../services/actividadesService"
 import { subirRespuestaArchivo, eliminarRespuesta, obtenerRespuestasActividad } from '../services/respuestasActividadService'
 import Menu from '../components/Menu'
-import '../styles/respuestaActividad.css';
+import '../styles/respuestaactividad.css';
 
 import React from 'react';
 
