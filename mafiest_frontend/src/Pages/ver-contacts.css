@@ -1,0 +1,28 @@
+/* Estilos para la página de contactos */
+.contacts-container {
+  max-width: 900px;
+  margin: 80px auto 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+}
+.loading, .error-message {
+  text-align: center;
+  color: #e94560;
+  font-weight: 600;
+  margin-top: 32px;
+}
+h2 {
+  color: #e94560;
+  font-size: 2rem;
+  margin-bottom: 24px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  border-bottom: 1px solid #eee;
+  padding: 16px 0;
+}
