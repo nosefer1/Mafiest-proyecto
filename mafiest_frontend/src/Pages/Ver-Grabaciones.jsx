@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import grabacionesService from '../services/grabacionesService'
+import * as grabacionesService from '../services/grabaciones'
 import Menu from '../components/Menu'
 
 const VerGrabaciones = ({ user }) => {

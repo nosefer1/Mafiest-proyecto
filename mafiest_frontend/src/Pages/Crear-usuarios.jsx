@@ -1,6 +1,6 @@
 // src/pages/Crear.jsx
 import { useState } from "react"
-import userService from "../services/userService"
+import * as userService from "../services/user"
 import Menu from "../components/Menu"
 import ListaUsuarios from "../components/ListaUsuarios"
 

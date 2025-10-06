@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import grabacionesService from '../services/grabacionesService'
+import * as grabacionesService from '../services/grabaciones'
 
 const AgregarGrabacion = ({ user, onGrabacionAgregada }) => {
   const [title, setTitle] = useState('')

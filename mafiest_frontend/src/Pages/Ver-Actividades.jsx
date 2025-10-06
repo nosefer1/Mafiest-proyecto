@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import { obtenerActividadesVisibles, setToken, responderActividad } from "../services/actividadesService"
-import { subirRespuestaArchivo, eliminarRespuesta, obtenerRespuestasActividad } from '../services/respuestasActividadService'
+import { obtenerActividadesVisibles, setToken, responderActividad } from "../services/actividades"
+import { subirRespuestaArchivo, eliminarRespuesta, obtenerRespuestasActividad } from '../services/respuestasActividad'
 import Menu from '../components/Menu'
 import '../styles/respuestaactividad.css';
 

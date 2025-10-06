@@ -1,8 +1,8 @@
 
 import '../styles/login.css';
 import { useState } from 'react'
-import loginService from '../services/login'
-import { setToken as setActividadesToken } from '../services/actividadesService'
+import * as loginService from '../services/login'
+import { setToken as setActividadesToken } from '../services/actividades'
 
 const Login = ({ handleLogin: parentHandleLogin, username, setUsername, password, setPassword, message }) => {
 	const [loading, setLoading] = useState(false)

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import userService from '../services/userService';
+import * as userService from '../services/user';
 
 const RegistroIndependiente = ({ onSuccess, onRegistroExitoso }) => {
   const [username, setUsername] = useState('');

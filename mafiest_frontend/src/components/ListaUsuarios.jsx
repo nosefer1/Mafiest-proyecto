@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import userService from "../services/userService"
+import * as userService from "../services/user"
 import Menu from "../components/Menu"
 
 const ListaUsuarios = ({ user }) => {

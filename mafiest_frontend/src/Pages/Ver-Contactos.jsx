@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Menu from '../components/Menu'
-import contactosService from '../services/contactosService'
+import * as contactosService from '../services/contactos'
 import '../styles/ver-contacts.css';
 
 const VerContactos = ({ user }) => {

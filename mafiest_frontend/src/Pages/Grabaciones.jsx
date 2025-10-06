@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import grabacionesService from '../services/grabacionesService'
+import * as grabacionesService from '../services/grabaciones'
 import AgregarGrabacion from '../components/AgregarGrabacion'
 
 const Grabaciones = ({ user }) => {
