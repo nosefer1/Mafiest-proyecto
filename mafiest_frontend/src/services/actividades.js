@@ -10,7 +10,18 @@ const setToken = newToken => {
 }
 
 const obtenerTodas = async () => {
-  const response = await axios.get(baseUrl)
+  const config = {
+    headers: { Authorization: token }
+  }
+  const response = await axios.get(baseUrl, config)
+  return response.data
+}
+
+const obtenerPorId = async (id) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  const response = await axios.get(`${baseUrl}/${id}`, config)
   return response.data
 }
 
@@ -27,6 +38,7 @@ const crearActividad = async newObject => {
     headers: { Authorization: token }
   }
   let dataToSend = newObject
+  
   // Si es archivo, usar FormData
   if (newObject.tipo === 'archivo' && (newObject.archivo || newObject.archivoUrl)) {
     const formData = new FormData()
@@ -44,7 +56,42 @@ const crearActividad = async newObject => {
       newObject.preguntas = JSON.stringify(newObject.preguntas)
     }
   }
+  
   const response = await axios.post(baseUrl, dataToSend, config)
+  return response.data
+}
+
+const actualizarActividad = async (id, updatedObject) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  let dataToSend = updatedObject
+
+  if (updatedObject.tipo === 'archivo' && (updatedObject.archivo || updatedObject.archivoUrl)) {
+    const formData = new FormData()
+    formData.append('titulo', updatedObject.titulo)
+    formData.append('descripcion', updatedObject.descripcion)
+    formData.append('fechaLimite', updatedObject.fechaLimite)
+    formData.append('tipo', 'archivo')
+    if (updatedObject.archivo) formData.append('archivo', updatedObject.archivo)
+    if (updatedObject.archivoUrl) formData.append('archivoUrl', updatedObject.archivoUrl)
+    dataToSend = formData
+    config.headers['Content-Type'] = 'multipart/form-data'
+  } else if (updatedObject.tipo === 'formulario') {
+    if (Array.isArray(updatedObject.preguntas)) {
+      updatedObject.preguntas = JSON.stringify(updatedObject.preguntas)
+    }
+  }
+
+  const response = await axios.put(`${baseUrl}/${id}`, dataToSend, config)
+  return response.data
+}
+
+const eliminarActividad = async (id) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response.data
 }
 
@@ -59,28 +106,13 @@ const responderActividad = async (id, preguntaIndex, respuestaIndex) => {
   return response.data
 }
 
-const eliminarActividad = async (id) => {
-  const config = {
-    headers: { Authorization: token }
-  }
-  const response = await axios.delete(`${baseUrl}/${id}`, config)
-  return response.data
-}
-
-const editarActividad = async (id, data) => {
-  const config = {
-    headers: { Authorization: token }
-  }
-  const response = await axios.put(`${baseUrl}/${id}`, data, config)
-  return response.data
-}
-
-export {
+export default {
+  setToken,
   obtenerTodas,
+  obtenerPorId,
   obtenerMisActividades,
   crearActividad,
-  responderActividad,
+  actualizarActividad,
   eliminarActividad,
-  editarActividad,
-  setToken
+  responderActividad
 }

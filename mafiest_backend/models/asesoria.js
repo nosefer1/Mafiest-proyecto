@@ -15,6 +15,22 @@ const Asesoria = sequelize.define('Asesoria', {
     type: DataTypes.TEXT,
     allowNull: false
   },
+  profesorAsignado: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  precio: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true
+  },
+  estado: {
+    type: DataTypes.ENUM('pendiente', 'respondida'),
+    defaultValue: 'pendiente'
+  },
+  respuesta: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,

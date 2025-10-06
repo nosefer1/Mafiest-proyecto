@@ -11,6 +11,8 @@ import Login from "../Pages/Login";
 import RegistroIndependiente from "../Pages/RegistroIndependiente";
 import Grabaciones from "../Pages/Grabaciones";
 import VerGrabaciones from "../Pages/Ver-Grabaciones";
+import VerAsesorias from "../Pages/Ver-Asesorias";
+import ResponderAsesorias from "../Pages/ResponderAsesorias";
 
 const AppRoutes = ({ user, setUser }) => {
   return (
@@ -36,6 +38,10 @@ const AppRoutes = ({ user, setUser }) => {
           user?.rol === 'administrador' ? <VerContactos user={user} /> : <LandingPage user={user} />
         } />
         <Route path="/asesorias" element={<Asesorias user={user} />} />
+        <Route path="/ver-asesorias" element={<VerAsesorias user={user} />} />
+        <Route path="/responder-asesorias" element={
+          user?.rol === 'administrador' ? <ResponderAsesorias user={user} /> : <LandingPage user={user} />
+        } />
         {/* Grabaciones: docentes y admin pueden agregar, todos pueden ver */}
         <Route path="/grabaciones" element={
           user?.rol === 'docente' || user?.rol === 'administrador'
