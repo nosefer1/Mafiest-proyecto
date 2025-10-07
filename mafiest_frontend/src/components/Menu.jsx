@@ -38,16 +38,23 @@ const Menu = ({ user }) => {
               </li>
             )}
             {user.rol === 'administrador' && (
-              <li>
-                <Link to="/contactos" className={isCurrentPath('/contactos') ? 'active' : ''}>
-                  Ver Contactos
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/contactos" className={isCurrentPath('/contactos') ? 'active' : ''}>
+                    Ver Contactos
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/gestionarusuarios" className={isCurrentPath('/gestionarusuarios') ? 'active' : ''}>
+                    Gestionar Usuarios
+                  </Link>
+                </li>
+              </>
             )}
             <li>
-              <button onClick={handleLogout}>
-                Cerrar Sesión
-              </button>
+              <Link to="/perfil" className={isCurrentPath('/perfil') ? 'active' : ''}>
+                Mi Perfil
+              </Link>
             </li>
           </>
         ) : (

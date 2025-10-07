@@ -39,36 +39,31 @@ const ListaUsuarios = ({ user }) => {
         : (
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {usuarios.map(u => (
-              <li key={u.id} style={{ 
-                margin: '10px 0', 
-                padding: '10px', 
-                border: '1px solid #ddd',
-                borderRadius: '5px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
+              <li key={u.id} className="card mb-3">
                 <div>
-                  <strong>Usuario: {u.username}</strong>
-                  <br />
-                  Nombre: {u.name}
-                  <br />
-                  Correo: {u.email}
-                  <br />
-                  Rol: <em>{u.Rol || "Sin rol"}</em>
+                  <div className="d-flex justify-content-between align-items-start mb-2">
+                    <strong className="me-3">Usuario: {u.username}</strong>
+                    <span className={`badge ${u.Rol === 'administrador' ? 'bg-danger' : 
+                      u.Rol === 'docente' ? 'bg-success' : 
+                      u.Rol === 'estudiante' ? 'bg-primary' : 'bg-secondary'}`}>
+                      {u.Rol || "Sin rol"}
+                    </span>
+                  </div>
+                  <div className="mb-1">Nombre: {u.name}</div>
+                  <div className="mb-1">Correo: {u.email}</div>
+                  <div className="mb-1">
+                    Grupo: {u.grupoId ? (
+                      <span className="badge bg-info">{u.grupoId}</span>
+                    ) : (
+                      <small className="text-muted">No asignado</small>
+                    )}
+                  </div>
                 </div>
                 {/* No mostrar el botón de eliminar para el usuario actual */}
                 {user?.username !== u.username && (
                   <button 
                     onClick={() => handleDelete(u.id, u.username)}
-                    style={{
-                      backgroundColor: '#ff4444',
-                      color: 'white',
-                      border: 'none',
-                      padding: '5px 10px',
-                      borderRadius: '3px',
-                      cursor: 'pointer'
-                    }}
+                    className="btn btn-danger btn-sm"
                   >
                     Eliminar
                   </button>
