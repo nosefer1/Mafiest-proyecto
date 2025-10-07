@@ -13,6 +13,7 @@ import Grabaciones from "../Pages/Grabaciones";
 import VerGrabaciones from "../Pages/Ver-Grabaciones";
 import VerAsesorias from "../Pages/Ver-Asesorias";
 import ResponderAsesorias from "../Pages/ResponderAsesorias";
+import Biblioteca from "../Pages/Biblioteca";
 
 const AppRoutes = ({ user, setUser }) => {
   return (
@@ -48,7 +49,9 @@ const AppRoutes = ({ user, setUser }) => {
             : <LandingPage user={user} />
         } />
         <Route path="/ver-grabaciones" element={<VerGrabaciones user={user} />} />
-  <Route path="*" element={<LandingPage user={user} />} />
+        {/* Biblioteca: accesible para todos */}
+        <Route path="/biblioteca" element={<Biblioteca user={user} />} />
+        <Route path="*" element={<LandingPage user={user} />} />
       </Routes>
   );
 };
