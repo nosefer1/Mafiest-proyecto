@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import LandingPage from "../Pages/LandingPage";
 import Contactanos from "../Pages/Contactanos";
 import SobreNosotros from "../Pages/SobreNosotros";
@@ -16,8 +16,7 @@ import ResponderAsesorias from "../Pages/ResponderAsesorias";
 
 const AppRoutes = ({ user, setUser }) => {
   return (
-    <Router>
-      <Routes>
+    <Routes>
         <Route path="/" element={<LandingPage user={user} />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/registro" element={<RegistroIndependiente />} />
@@ -51,7 +50,6 @@ const AppRoutes = ({ user, setUser }) => {
         <Route path="/ver-grabaciones" element={<VerGrabaciones user={user} />} />
   <Route path="*" element={<LandingPage user={user} />} />
       </Routes>
-    </Router>
   );
 };
 

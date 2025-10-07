@@ -6,7 +6,7 @@ import '../styles/respuestaactividad.css';
 
 import React from 'react';
 
-const RespuestaArchivo({ actividad, user }) {
+const RespuestaArchivo = ({ actividad, user }) => {
   const [archivo, setArchivo] = React.useState(null);
   const [archivoUrl, setArchivoUrl] = React.useState('');
   const [respuesta, setRespuesta] = React.useState(null);

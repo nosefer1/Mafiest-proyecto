@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { crearActividad, setToken, obtenerMisActividades } from '../services/actividades'
 import Menu from "../components/Menu"
-import CrearActividadForm from '../components/CrearActividadForm'
+import CrearActividad from '../components/CrearActividad'
 
 
 const Actividades = ({ user }) => {
@@ -234,7 +234,7 @@ const Actividades = ({ user }) => {
       <Menu user={user} />
       <div style={{ maxWidth: 600, margin: '0 auto', background: '#fff', borderRadius: 16, boxShadow: '0 2px 16px rgba(0,0,0,0.08)', padding: '2.5rem 2rem', marginTop: 32 }}>
         <h2 style={{ textAlign: 'center', color: '#e94560', fontWeight: 800, marginBottom: 24 }}>Crear Actividad</h2>
-        <CrearActividadForm
+        <CrearActividad
           titulo={titulo}
           setTitulo={setTitulo}
           descripcion={descripcion}
