@@ -1,4 +1,3 @@
-
 const express = require('express')
 const Actividad = require('../models/actividad')
 const User = require('../models/user')
