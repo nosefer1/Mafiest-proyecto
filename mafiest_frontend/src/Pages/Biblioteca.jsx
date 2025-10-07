@@ -3,7 +3,7 @@ import React from 'react';
 import Menu from '../components/Menu';
 import '../styles/biblioteca.css';
 
-const Biblioteca = () => {
+const Biblioteca = ({ user }) => {
   const libros = [
     {
       id: 1,

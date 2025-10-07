@@ -49,9 +49,9 @@ const AppRoutes = ({ user, setUser }) => {
             : <LandingPage user={user} />
         } />
         <Route path="/ver-grabaciones" element={<VerGrabaciones user={user} />} />
-        {/* Biblioteca: accesible para todos */}
+        {/* Biblioteca: accesible para todos los usuarios */}
         <Route path="/biblioteca" element={<Biblioteca user={user} />} />
-        <Route path="*" element={<LandingPage user={user} />} />
+  <Route path="*" element={<LandingPage user={user} />} />
       </Routes>
   );
 };
