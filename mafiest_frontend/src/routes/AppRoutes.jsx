@@ -18,9 +18,9 @@ const AppRoutes = ({ user, setUser }) => {
   return (
     <Router>
       <Routes>
-  <Route path="/" element={<LandingPage user={user} />} />
-  <Route path="/login" element={<Login setUser={setUser} />} />
-  <Route path="/registro" element={<RegistroIndependiente />} />
+        <Route path="/" element={<LandingPage user={user} />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/registro" element={<RegistroIndependiente />} />
         <Route path="/sobrenosotros" element={<SobreNosotros user={user} />} />
         {/* Actividades: docentes y administradores pueden crear, todos pueden ver */}
         <Route path="/actividades" element={
